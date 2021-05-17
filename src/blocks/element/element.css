@@ -1,0 +1,18 @@
+@import url(./__title/element__title.css);
+@import url(./__photo/element__photo.css);
+@import url(./__heart/element__heart.css);
+@import url(./__heart/_active/element__heart_active.css);
+@import url(./__container/element__container.css);
+@import url(./__delete/element__delete.css);
+@import url(./__number/element__number.css);
+@import url(./__likes/element__likes.css);
+@import url(./__hidden/element__hidden.css);
+
+.element {
+    max-width: 100%;
+    margin: 0 auto;
+    position: relative;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    overflow: hidden;
+}

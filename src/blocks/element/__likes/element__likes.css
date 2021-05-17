@@ -1,0 +1,7 @@
+.element__likes {
+    height: 30px;
+    width: 21px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
