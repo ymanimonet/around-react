@@ -3,7 +3,7 @@ import editButton from '../images/edit.svg';
 import {api} from '../utils/Api.js';
 import Card from './Card.js'
 
-function Main({handleCardClick, onEditAvatar, onEditProfile, onAddPlace, card}) {
+function Main({handleCardClick, onEditAvatar, onEditProfile, onAddPlace}) {
 
   const [userName, setUserName] = React.useState("");
   const [userDescription, setUserDescription] = React.useState("");
@@ -11,31 +11,20 @@ function Main({handleCardClick, onEditAvatar, onEditProfile, onAddPlace, card}) 
   const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
-    function gatherUserInfo() {
-      return fetch(this._baseUrl + "/users/me", {
-        headers: this._headers
-      })
-      .then(res => res.ok ? res.json() : Promise.reject(new Error(res.statusText)))
-    }
-
-    function getInitialCards() {
-      return fetch(this._baseUrl + "/cards", {
-          headers: this._headers
-      })
-      .then(res => res.ok ? res.json() : Promise.reject(new Error(res.statusText)))
-    }
 
     api.gatherUserInfo().then((result) => {
       setUserName(result.name);
       setUserDescription(result.about);
       setUserAvatar(result.avatar);
     })
+    .catch((err) => console.log(err));
 
     api.getInitialCards().then((items) => {
       setCards(items);
     })
+    .catch((err) => console.log(err));
 
-  });
+  }, []);
 
   return (
     <main className="content">
