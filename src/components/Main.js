@@ -1,23 +1,16 @@
 import React from 'react';
 import editButton from '../images/edit.svg';
 import {api} from '../utils/Api.js';
-import Card from './Card.js'
+import Card from './Card.js';
+import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
-function Main({handleCardClick, onEditAvatar, onEditProfile, onAddPlace}) {
+function Main({handleCardClick, onEditAvatar, onEditProfile, onAddPlace, setCardId, cardId}) {
 
-  const [userName, setUserName] = React.useState("");
-  const [userDescription, setUserDescription] = React.useState("");
-  const [userAvatar, setUserAvatar] = React.useState("");
   const [cards, setCards] = React.useState([]);
 
-  React.useEffect(() => {
+  const userInfo = React.useContext(CurrentUserContext);
 
-    api.gatherUserInfo().then((result) => {
-      setUserName(result.name);
-      setUserDescription(result.about);
-      setUserAvatar(result.avatar);
-    })
-    .catch((err) => console.log(err));
+  React.useEffect(() => {
 
     api.getInitialCards().then((items) => {
       setCards(items);
@@ -26,15 +19,34 @@ function Main({handleCardClick, onEditAvatar, onEditProfile, onAddPlace}) {
 
   }, []);
 
+  function onCardLike(card) {
+    // Check one more time if this card was already liked
+    const isLiked = card.likes.some(i => i._id === userInfo._id);
+    
+    // Send a request to the API and getting the updated card data
+    api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
+        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+    })
+    .catch((err) => console.log(err));
+  } 
+
+  function onCardDelete() {
+    api.removeCard(cardId).then(() => {
+      const newCards = cards.filter((card) => card._id !== cardId);
+      setCards(newCards);
+    })
+    .catch((err) => console.log(err));
+  }
+
   return (
     <main className="content">
       <section className="profile">
-        <img className="profile__pic" src={userAvatar} alt="profile" onClick={onEditAvatar}/>
+        <img className="profile__pic" src={userInfo.avatar} alt="profile" onClick={onEditAvatar}/>
         <img className="profile__pic-edit" src={editButton} alt="edit button" />
         <div className="profile__info">
-          <h1 className="profile__title">{userName}</h1>
+          <h1 className="profile__title">{userInfo.name}</h1>
           <button className="profile__edit" type="button" aria-label="edit" onClick={onEditProfile} />
-          <p className="profile__subtitle">{userDescription}</p>
+          <p className="profile__subtitle">{userInfo.description}</p>
         </div>
         <button className="profile__add-button" type="button" aria-label="add" onClick={onAddPlace} />
       </section>
@@ -49,6 +61,9 @@ function Main({handleCardClick, onEditAvatar, onEditProfile, onAddPlace}) {
                 likes={card.likes}
                 key={card._id}
                 handleCardClick={handleCardClick}
+                onCardLike={onCardLike}
+                onCardDelete={onCardDelete}
+                setCardId={setCardId}
               />
             )
           })}

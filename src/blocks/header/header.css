@@ -3,7 +3,8 @@
 .header {
     max-width: 880px;
     min-height: 74px;
-    margin: 45px auto 36.25px;
+    margin: 0px auto 36.25px;
+    padding-top: 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

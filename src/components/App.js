@@ -3,8 +3,11 @@ import '../index.css';
 import Header from './Header.js';
 import Main from './Main.js';
 import PopupWithForm from './PopupWithForm.js';
+import EditProfilePopup from './EditProfilePopup.js';
 import ImagePopup from './ImagePopup.js';
 import Footer from './Footer.js';
+import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
+import { api } from '../utils/Api';
 
 function App() {
 
@@ -13,6 +16,12 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({});
+  const [cardId, setCardId] = React.useState('');
+  const [userInfo, setUserInfo] = React.useState({
+    name: '',
+    description: '',
+    avatar: ''
+  });
 
   function handleEditProfileClick() {
     setIsEditProfileOpen(true);
@@ -39,7 +48,31 @@ function App() {
     setSelectedCard({});
   }
 
+  function handleUpdateUser() {
+    api.updateUserInfo()
+      .then(res => {
+        setUserInfo(res);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    
+  }
+
+  React.useEffect(() => {
+    api.gatherUserInfo()
+      .then(res => {
+        setUserInfo(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    
+  }, []);
+
   return (
+  <CurrentUserContext.Provider value={userInfo}>
   <div className="root">
   <div className="root__container">
     <Header />
@@ -48,21 +81,15 @@ function App() {
       onEditProfile={handleEditProfileClick}
       onAddPlace={handleAddPlaceClick}
       handleCardClick={handleCardClick}
+      setCardId={setCardId}
+      cardId={cardId}
     />
-    <PopupWithForm
-      name="edit"
-      title="Edit Profile"
-      submitButton="Save"
+    
+    <EditProfilePopup 
       isOpen={isEditProfileOpen}
       onClose={closeAllPopups}
-    >
-      <fieldset className="form__text">
-        <input id="profile-name" className="form__item form__item_field_name" type="text" name="name" placeholder="Name" minLength={2} maxLength={40} required />
-        <span id="profile-name-error" className="form__error" />
-        <input id="profile-text" className="form__item form__item_field_description" type="text" name="about" placeholder="About me" minLength={2} maxLength={40} required />
-        <span id="profile-text-error" className="form__error" />
-      </fieldset>
-    </PopupWithForm>
+      onUpdateUser={handleUpdateUser}
+    />
 
     <PopupWithForm
       name="add"
@@ -107,6 +134,7 @@ function App() {
   </div>
   
 </div>
+</CurrentUserContext.Provider>
 
   );
 }

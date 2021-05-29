@@ -49,8 +49,8 @@ class Api {
                 name,
                 link
             })
-          })
-          .then(res => res.ok ? res.json() : Promise.reject(new Error(res.statusText)));
+        })
+        .then(res => res.ok ? res.json() : Promise.reject(new Error(res.statusText)));
     }
 
     removeCard(cardId) {
@@ -61,7 +61,7 @@ class Api {
             .then(res => res.ok ? res.json() : Promise.reject(new Error(res.statusText)));
     }
 
-    addLike(cardId) {
+    /*addLike(cardId) {
         return fetch(this._baseUrl + "/cards/likes/" + cardId, {
                 method: "PUT",
                 headers: this._headers
@@ -72,6 +72,14 @@ class Api {
     removeLike(cardId) {
         return fetch(this._baseUrl + "/cards/likes/" + cardId, {
                 method: "DELETE",
+                headers: this._headers
+            })
+            .then(res => res.ok ? res.json() : Promise.reject(new Error(res.statusText)));
+    }*/
+
+    changeLikeCardStatus(cardId, isLiked) {
+        return fetch(this._baseUrl + "/cards/likes/" + cardId, {
+                method: isLiked ? "PUT" : "DELETE",
                 headers: this._headers
             })
             .then(res => res.ok ? res.json() : Promise.reject(new Error(res.statusText)));
