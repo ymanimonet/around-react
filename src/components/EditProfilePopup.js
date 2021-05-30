@@ -5,7 +5,7 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 function EditProfilePopup ({isOpen, onClose, onUpdateUser}) {
   
   const [name, setName] = React.useState('');
-  const [description, setDescription] = React.useState('');
+  const [about, setAbout] = React.useState(''); //description
 
   // Subscription to the context
   const userInfo = React.useContext(CurrentUserContext);
@@ -14,23 +14,23 @@ function EditProfilePopup ({isOpen, onClose, onUpdateUser}) {
   // their data will be used in managed components.
   React.useEffect(() => {
     setName(userInfo.name);
-    setDescription(userInfo.about);
+    setAbout(userInfo.about); //description
   }, [userInfo]); 
 
     function handleSubmit (e) {
         e.preventDefault();
         onUpdateUser({
             name,
-            description,
+            about, //description
         });
     };
 
     function handleNameChange (e) {
-        setName(e.target.name)
+        setName(e.target.value)
     }
 
-    function handleDescriptionChange (e) {
-        setDescription(e.target.description)
+    function handleAboutChange (e) { //description
+        setAbout(e.target.value) //description
     }
     
     return (
@@ -49,7 +49,7 @@ function EditProfilePopup ({isOpen, onClose, onUpdateUser}) {
             type="text"
             name="name"
             placeholder="Name"
-            value={name}
+            defaultValue={name}
             onChange={handleNameChange}
             minLength={2}
             maxLength={40}
@@ -65,8 +65,8 @@ function EditProfilePopup ({isOpen, onClose, onUpdateUser}) {
             type="text"
             name="about"
             placeholder="About me"
-            value={description}
-            onChange={handleDescriptionChange}
+            defaultValue={about} //description
+            onChange={handleAboutChange} //description
             minLength={2}
             maxLength={40}
             required

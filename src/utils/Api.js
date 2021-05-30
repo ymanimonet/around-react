@@ -11,7 +11,7 @@ class Api {
           .then(res => res.ok ? res.json() : Promise.reject(new Error(res.statusText)))
     }
 
-    updateUserInfo({name, about}) {
+    updateUserInfo({name, about}) { 
         return fetch(this._baseUrl + "/users/me", {
             method: "PATCH",
             headers: this._headers,
@@ -42,6 +42,7 @@ class Api {
     }
 
     addCard({name, link}) {
+        debugger;
         return fetch(this._baseUrl + "/cards", {
             method: "POST",
             headers: this._headers,
@@ -60,22 +61,6 @@ class Api {
             })
             .then(res => res.ok ? res.json() : Promise.reject(new Error(res.statusText)));
     }
-
-    /*addLike(cardId) {
-        return fetch(this._baseUrl + "/cards/likes/" + cardId, {
-                method: "PUT",
-                headers: this._headers
-            })
-            .then(res => res.ok ? res.json() : Promise.reject(new Error(res.statusText)));
-    }
-
-    removeLike(cardId) {
-        return fetch(this._baseUrl + "/cards/likes/" + cardId, {
-                method: "DELETE",
-                headers: this._headers
-            })
-            .then(res => res.ok ? res.json() : Promise.reject(new Error(res.statusText)));
-    }*/
 
     changeLikeCardStatus(cardId, isLiked) {
         return fetch(this._baseUrl + "/cards/likes/" + cardId, {
