@@ -9,7 +9,7 @@ import AddPlacePopup from './AddPlacePopup';
 import ImagePopup from './ImagePopup.js';
 import Footer from './Footer.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
-import { api } from '../utils/Api';
+import { api } from '../utils/api';
 
 
 
