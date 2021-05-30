@@ -174,9 +174,8 @@ function App() {
     />
     <Footer />
   </div>
-  
-</div>
-</CurrentUserContext.Provider>
+  </div>
+  </CurrentUserContext.Provider>
 
   );
 }
