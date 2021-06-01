@@ -49,7 +49,7 @@ function EditProfilePopup ({isOpen, onClose, onUpdateUser}) {
             type="text"
             name="name"
             placeholder="Name"
-            defaultValue={name}
+            value={name}
             onChange={handleNameChange}
             minLength={2}
             maxLength={40}
@@ -65,7 +65,7 @@ function EditProfilePopup ({isOpen, onClose, onUpdateUser}) {
             type="text"
             name="about"
             placeholder="About me"
-            defaultValue={about} //description
+            value={about} //description
             onChange={handleAboutChange} //description
             minLength={2}
             maxLength={40}

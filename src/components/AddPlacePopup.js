@@ -9,8 +9,6 @@ function AddPlacePopup ({isOpen, onClose, onAddPlace}) {
     function handleAddCardSubmit(e) {
         e.preventDefault();
         onAddPlace({name, link});
-        console.log(name);
-        console.log(link);
     }
 
     function handleNameChange(e) {
@@ -36,6 +34,7 @@ function AddPlacePopup ({isOpen, onClose, onAddPlace}) {
             id="card-title"
             className="form__item form__item_field_title"
             type="text"
+            value={name}
             name="name"
             placeholder="Title"
             minLength={1}
@@ -51,6 +50,7 @@ function AddPlacePopup ({isOpen, onClose, onAddPlace}) {
             id="card-url"
             className="form__item form__item_field_image-url"
             type="url"
+            value={link}
             name="link"
             placeholder="Image Link"
             required 

@@ -42,7 +42,6 @@ class Api {
     }
 
     addCard({name, link}) {
-        debugger;
         return fetch(this._baseUrl + "/cards", {
             method: "POST",
             headers: this._headers,

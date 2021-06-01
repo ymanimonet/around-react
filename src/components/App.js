@@ -88,23 +88,16 @@ function App() {
   }
 
   React.useEffect(() => {
-    api.gatherUserInfo()
-      .then(res => {
+
+    Promise.all([
+      api.gatherUserInfo(),
+      api.getInitialCards()
+    ])
+      .then(([res, items]) => {
         setUserInfo(res);
-      })
-      .catch((err) => {
-        console.log(err);
+        setCards(items);
       })
     
-  }, []);
-
-  React.useEffect(() => {
-
-    api.getInitialCards().then((items) => {
-      setCards(items);
-    })
-    .catch((err) => console.log(err));
-
   }, []);
 
   function onCardLike(card) {
@@ -118,9 +111,9 @@ function App() {
       .catch((err) => console.log(err));
   } 
 
-  function onCardDelete() {
-    api.removeCard(cardId).then(() => {
-      const newCards = cards.filter((card) => card._id !== cardId);
+  function onCardDelete(card) {
+    api.removeCard(card._id).then(() => {
+      const newCards = cards.filter((c) => c._id !== card._id);
       setCards(newCards);
     })
     .catch((err) => console.log(err));
